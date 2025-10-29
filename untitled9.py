@@ -81,7 +81,7 @@ if len(line_points) >= 2:
         opacity=0.8      # 線の透明度
     ).add_to(m)
 
-pin_count = sum([st.session_state_point_24h is not None,st.session_state_point_48h is not None,st.session_state_point_72h is not None,st.session_state_point_96h is not None])
+pin_count = sum([st.session_state.point_24h is not None,st.session_state.point_48h is not None,st.session_state.point_72h is not None,st.session_state.point_96h is not None])
 map_key = f"folium_map_with_{pin_count}_pins"
 # 地図を表示し、クリックされた情報を `map_data` に格納
 map_data = st_folium(m, width='100%', height=400, key=map_key)
