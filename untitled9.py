@@ -37,13 +37,15 @@ if map_data and map_data["last_clicked"]:
         st.session_state.last_clicked_point = clicked_point
         st.rerun() # アプリをリフレッシュしてピンを即座に表示
         
-# --- 座標の表示 ---
+
+# --- 座標の表示 --- (★ 改善案1)
 st.header("取得した座標")
 if st.session_state.last_clicked_point:
     lat, lon = st.session_state.last_clicked_point
-    st.text("緯度（北緯）:")
-    st.code(f"{lat:.6f}")
-    st.text("経度（東経）:")
-    st.code(f"{lon:.6f}")
+    
+    # st.code() の代わりに st.text_input(disabled=True) を使う
+    st.text_input("緯度（北緯） ※タップしてコピーできます", value=f"{lat:.6f}", disabled=True)
+    st.text_input("経度（東経） ※タップしてコピーできます", value=f"{lon:.6f}", disabled=True)
+
 else:
     st.write("地図上をクリックして地点を指定してください。")
