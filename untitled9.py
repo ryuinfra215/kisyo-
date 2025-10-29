@@ -10,8 +10,8 @@ from streamlit_folium import st_folium
 import folium
 
 # --- アプリの基本設定 ---
-st.set_page_config(page_title="台風予想コンテスト 座標取得ツール")
-st.title("🗺️ 台風予想コンテスト 座標取得ツール")
+st.set_page_config(page_title="台風進路予想コンテスト 座標取得ツール")
+st.title("台風進路予想コンテスト 座標取得ツール")
 st.info("下の「予想時間」を選んでから、地図をクリックして座標を取得してください。")
 
 # --- Streamlitのセッションステートを初期化 ---
@@ -34,10 +34,11 @@ forecast_time = st.radio(
     label_visibility="collapsed"
 )
 
+
 # --- 2. 地図の表示 ---
 st.subheader(f"2. 「{forecast_time}」の予想地点をクリック")
 map_center = [35, 135]
-m = folium.Map(location=map_center, zoom_start=5)
+m = folium.Map(location=map_center, zoom_start=5, titles='CartoDB dark_matter')
 
 # --- すでにピンが押されている場所を地図に表示 ---
 # 24h
@@ -56,6 +57,32 @@ if st.session_state.point_72h:
 if st.session_state.point_96h:
     lat, lon = st.session_state.point_96h
     folium.Marker([lat, lon], popup="96時間後の予想", icon=folium.Icon(color="red")).add_to(m)
+
+# ... (folium.Marker を add_to(m) するコードの後) ...
+
+# --- ★改善案1：ピン同士を線で結ぶ★ ---
+# 座標が入力されている点だけを時系列順にリストに格納
+line_points = []
+if st.session_state.point_24h:
+    line_points.append(st.session_state.point_24h)
+if st.session_state.point_48h:
+    line_points.append(st.session_state.point_48h)
+if st.session_state.point_72h:
+    line_points.append(st.session_state.point_72h)
+if st.session_state.point_96h:
+    line_points.append(st.session_state.point_96h)
+
+# 2点以上入力されていれば、線を引く
+if len(line_points) >= 2:
+    folium.PolyLine(
+        locations=line_points,
+        color='deeppink',  # 線の色（目立つように）
+        weight=3,        # 線の太さ
+        opacity=0.8      # 線の透明度
+    ).add_to(m)
+
+# 地図を表示し、クリックされた情報を `map_data` に格納
+map_data = st_folium(m, width='100%', height=400)
 
 # 地図を表示し、クリックされた情報を `map_data` に格納
 map_data = st_folium(m, width='100%', height=400)
@@ -81,6 +108,18 @@ if map_data and map_data["last_clicked"]:
 # --- 4. 取得した座標の表示 ---
 st.divider()
 st.subheader("3. 取得した座標の確認")
+
+st.subheader("3. 取得した座標の確認")
+
+# --- ★改善案2：リセットボタン★ ---
+if st.button("やり直す (全てのピンをリセット)", type="secondary", use_container_width=True):
+    st.session_state.point_24h = None
+    st.session_state.point_48h = None
+    st.session_state.point_72h = None
+    st.session_state.point_96h = None
+    st.rerun() # ページを再読み込みして地図と表示をリセット
+
+# ... (show_coordinate(...) の関数定義と呼び出しは、この後に続く) ...
 
 def show_coordinate(label, point_data):
     """座標を表示する関数"""
@@ -110,8 +149,7 @@ all_filled = (
 if all_filled:
     st.success("すべての座標が入力されました！下のボタンから応募してください。")
     
-    # --- ★★★ ここをあなたの情報（8個のID）に書き換えてください ★★★ ---
-    
+   
     YOUR_FORM_ID = "1FAIpQLSe341DAqBnQbaWtJqodSFLsnXwvm9Y7nTtOZU0a8wsNmAi5eA" # あなたのフォームID
     
     ENTRY_ID_LAT_24 = "entry.1947537758" # 24h・緯度
