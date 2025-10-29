@@ -85,10 +85,6 @@ pin_count = sum([st.session_state.point_24h is not None,st.session_state.point_4
 map_key = f"folium_map_with_{pin_count}_pins"
 # 地図を表示し、クリックされた情報を `map_data` に格納
 map_data = st_folium(m, width='100%', height=400, key=map_key)
-
-# 地図を表示し、クリックされた情報を `map_data` に格納
-map_data = st_folium(m, width='100%', height=400)
-
 # --- 3. クリック処理 ---
 # クリックされたら、選択中の予想時間の座標を更新する
 if map_data and map_data["last_clicked"]:
