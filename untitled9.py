@@ -38,7 +38,7 @@ forecast_time = st.radio(
 # --- 2. 地図の表示 ---
 st.subheader(f"2. 「{forecast_time}」の予想地点をクリック")
 map_center = [35, 135]
-m = folium.Map(location=map_center, zoom_start=5,tiles='CartoDB positron')
+m = folium.Map(location=map_center, zoom_start=5,tiles='OpenStreetMap')
 
 # --- すでにピンが押されている場所を地図に表示 ---
 # 24h
