@@ -32,13 +32,13 @@ forecast_time = st.radio(
     options=["24時間後", "48時間後", "72時間後", "96時間後"],
     horizontal=True,
     label_visibility="collapsed"
-)
+    )
 
 
 # --- 2. 地図の表示 ---
 st.subheader(f"2. 「{forecast_time}」の予想地点をクリック")
 map_center = [35, 135]
-m = folium.Map(location=map_center, zoom_start=5, titles='CartoDB dark_matter')
+m = folium.Map(location=map_center, zoom_start=5, tiles='CartoDB dark_matter')
 
 # --- すでにピンが押されている場所を地図に表示 ---
 # 24h
@@ -79,7 +79,7 @@ if len(line_points) >= 2:
         color='deeppink',  # 線の色（目立つように）
         weight=3,        # 線の太さ
         opacity=0.8      # 線の透明度
-    ).add_to(m)
+        ).add_to(m)
 
 pin_count = sum([st.session_state.point_24h is not None,st.session_state.point_48h is not None,st.session_state.point_72h is not None,st.session_state.point_96h is not None])
 map_key = f"folium_map_with_{pin_count}_pins"
@@ -105,8 +105,6 @@ if map_data and map_data["last_clicked"]:
 
 # --- 4. 取得した座標の表示 ---
 st.divider()
-st.subheader("3. 取得した座標の確認")
-
 st.subheader("3. 取得した座標の確認")
 
 # --- ★改善案2：リセットボタン★ ---
