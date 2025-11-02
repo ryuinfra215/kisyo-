@@ -10,8 +10,8 @@ from streamlit_folium import st_folium
 import folium
 
 # --- アプリの基本設定 ---
-st.set_page_config(page_title="台風進路予想コンテスト/n座標取得ツール")
-st.title("台風進路予想コンテスト 座標取得ツール")
+st.set_page_config(page_title="台風進路予想コンテスト座標取得ツール")
+st.title("台風進路予想コンテスト/n 座標取得ツール")
 st.info("下の「予想時間」を選んでから、地図をクリックして座標を取得してください。")
 
 # --- Streamlitのセッションステートを初期化 ---
