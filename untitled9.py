@@ -7,6 +7,7 @@ Created on Wed Oct 29 09:55:59 2025
 
 import streamlit as st
 from streamlit_folium import st_folium
+from folium.plugins import BeautifyIcon
 import folium
 
 # --- アプリの基本設定 ---
@@ -41,23 +42,50 @@ map_center = [35, 135]
 m = folium.Map(location=map_center, zoom_start=5,tiles='OpenStreetMap',attribution_control=False)
 
 # --- すでにピンが押されている場所を地図に表示 ---
+common_style = {
+    'background_color': '#FFFFFF', # アイコンの背景は白
+    'inner_icon_style': 'font-size:14px;font-weight:bold;' # 数字のスタイル
+}
 # 24h
 if st.session_state.point_24h:
     lat, lon = st.session_state.point_24h
-    folium.Marker([lat, lon], popup="24時間後の予想", icon=folium.Icon(color="blue")).add_to(m)
+    icon = BeautifyIcon(
+        number=24,                  # 表示する数字
+        border_color='blue',        # 円の枠線の色
+        text_color='blue',          # 数字の色
+        **common_style
+    )
+    folium.Marker([lat, lon], popup="24時間後の予想", icon=icon.add_to(m)
 # 48h
 if st.session_state.point_48h:
     lat, lon = st.session_state.point_48h
-    folium.Marker([lat, lon], popup="48時間後の予想", icon=folium.Icon(color="green")).add_to(m)
+    icon = BeautifyIcon(
+        number=48,
+        border_color='green',
+        text_color='green',
+        **common_style
+    )
+    folium.Marker([lat, lon], popup="48時間後の予想", icon=icon).add_to(m)
 # 72h
 if st.session_state.point_72h:
     lat, lon = st.session_state.point_72h
-    folium.Marker([lat, lon], popup="72時間後の予想", icon=folium.Icon(color="orange")).add_to(m)
+    icon = BeautifyIcon(
+        number=72,
+        border_color='orange',
+        text_color='orange',
+        **common_style
+    )
+    folium.Marker([lat, lon], popup="72時間後の予想", icon=icon).add_to(m)
 # 96h
 if st.session_state.point_96h:
     lat, lon = st.session_state.point_96h
-    folium.Marker([lat, lon], popup="96時間後の予想", icon=folium.Icon(color="red")).add_to(m)
-
+    icon = BeautifyIcon(
+        number=96,
+        border_color='red',
+        text_color='red',
+        **common_style
+    )
+    folium.Marker([lat, lon], popup="96時間後の予想", icon=icon).add_to(m)
 # ... (folium.Marker を add_to(m) するコードの後) ...
 
 # --- ★改善案1：ピン同士を線で結ぶ★ ---
