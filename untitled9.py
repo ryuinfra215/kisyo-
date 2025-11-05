@@ -55,7 +55,7 @@ if st.session_state.point_24h:
         text_color='blue',          # 数字の色
         **common_style
     )
-    folium.Marker([lat, lon], popup="24時間後の予想", icon=icon.add_to(m)
+    folium.Marker([lat, lon], popup="24時間後の予想", icon=icon).add_to(m)
 # 48h
 if st.session_state.point_48h:
     lat, lon = st.session_state.point_48h
